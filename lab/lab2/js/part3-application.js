@@ -23,14 +23,15 @@
   Remember, this is open-ended. Open ended doesn't mean pointless: we're looking for
   filters that might actually be useful. Try to see what you can produce.
 ===================== */
+var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
 
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
 var resetMap = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  _.each(myMarkers, function(marker) {
+    map.removeLayer(marker);
+  });
 };
 
 /* =====================
@@ -39,9 +40,7 @@ var resetMap = function() {
   it down!
 ===================== */
 var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  $.ajax(phillySolarInstallationDataUrl).done(function(data){ myData = JSON.parse(data); });
 };
 
 /* =====================
@@ -49,7 +48,18 @@ var getAndParseData = function() {
   criteria happens to be — that's entirely up to you)
 ===================== */
 var plotData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  _.each(myData, function(feature) {
+    var marker = L.marker([feature.LAT, feature.LONG_]).bindPopup(feature.NAME);
+    if (booleanField && feature.YEARBUILT>2010) {
+      marker = marker.setOpacity(0.25);
+    }
+    if (stringField!=="" && stringField.length<feature.NAME.length) {
+      marker = marker.unbindPopup().bindPopup(stringField);
+    }
+    if (feature.KW>numericField1 && feature.KW<numericField2) {
+      marker = marker.setOpacity(1.0);
+    }
+    marker.addTo(map);
+    myMarkers.push(marker);
+  });
 };
