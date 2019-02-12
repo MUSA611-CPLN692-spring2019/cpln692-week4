@@ -23,11 +23,14 @@
   Remember, this is open-ended. Open ended doesn't mean pointless: we're looking for
   filters that might actually be useful. Try to see what you can produce.
 ===================== */
-
+var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
-var resetMap = function() {
+var resetMap = function(myMarkers) {
+  _.forEach(myMarkers, function(m) {
+    map.removeLayer(m);
+  });
   /* =====================
     Fill out this function definition
   ===================== */
@@ -39,6 +42,9 @@ var resetMap = function() {
   it down!
 ===================== */
 var getAndParseData = function() {
+  $.ajax(phillyCrimeDataUrl).done(function(res) {
+    myData = JSON.parse(res);
+  });
   /* =====================
     Fill out this function definition
   ===================== */
@@ -49,6 +55,18 @@ var getAndParseData = function() {
   criteria happens to be — that's entirely up to you)
 ===================== */
 var plotData = function() {
+    _.forEach(myData, function(x){
+      var marker;
+      if (booleanField && x["UCR Code"] == 600) {
+        marker = L.marker([x.Lat, x.Lng]).bindPopup(x["General Crime Category"]).addTo(map);
+        if (numericField1 !== "" && numericField2 !== "" && x.PSA > numericField1 && x.PSA < numericField2) {
+          marker =  L.marker([x.Lat, x.Lng]).bindPopup("PSA - " + x.PSA + ": " + x["General Crime Category"]).addTo(map);
+        }}
+      if (stringField !== "" && x["General Crime Category"] == stringField) {
+        marker =  L.marker([x.Lat, x.Lng]).bindPopup(x["General Crime Category"]).addTo(map);
+      }
+      myMarkers.push(marker);
+  });
   /* =====================
     Fill out this function definition
   ===================== */
