@@ -19,7 +19,9 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(str) {
+  return str.length >= 5;
+};
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -30,15 +32,20 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {
+  console.log(num * 2);
+};
 var theArray = [1, 5, 20, 100];
+_.each(theArray, function(num){(logDouble(num))});
+
+
 
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
   over, it will equal ['fizz', 'buzz', 'fizzbuzz'];
 ===================== */
-var fizzbuzzArray = [];
+var fizzbuzzArray = [3,5,15];
 var fizzbuzzFunc = function(num) {
   var str = '';
   if (num % 3 === 0) { str = 'fizz'; }
@@ -105,15 +112,33 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
 ===================== */
 
 
+
+  var popupText;
+  var crimeData;
+  var crimes;
+
+
+
+
+
+
 /* =====================
   Now that you've properly parsed your data, use _.each to plot the
   dataset you've pulled down.
 ===================== */
-
-
+var getCrimeData = function() {
+$.ajax(phillyCrimeDataUrl).done(function(ajaxResponseValue) {
+  crimeData = JSON.parse(ajaxResponseValue);
+  console.log(crimeData);
+  _.forEach(crimeData, function(x){
+    L.marker([x.Lat, x.Lng]).addTo(map)});
+});
+};
+  getCrimeData();
 /* =====================
  Leaflet setup - feel free to ignore this
 ===================== */
+
 
 var map = L.map('map', {
   center: [39.9522, -75.1639],

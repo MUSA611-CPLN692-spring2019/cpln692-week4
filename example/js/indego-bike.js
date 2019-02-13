@@ -18,7 +18,7 @@ var cleanStations;
 var getBikeData = function() {
   $.ajax(rideIndego).done(function(ajaxResponseValue) {
       // a function that does some kind of transformation on the response
-      bikeData = ajaxResponseValue;
+      bikeData = JSON.parse(ajaxResponseValue);
       // Turn the ajax json return into a familiar object format
       stations = new Object(bikeData.features);
       // removing the `geometries` to make it easier to show off some underscore examples

@@ -34,10 +34,23 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json");
+var parseData = function(data) {
+  return JSON.parse(data)
+  };
+var makeMarkers = function(parseData) {
+  var markers = [];
+  _.forEach(parseData, function(x){
+    markers.push(L.marker([x.Lat, x.Lng]))
+});
+  return markers;
+};
+var plotMarkers = function(markers) {
+  _.forEach(markers, function(m) {
+    m.addTo(map);
+  });
+};
+
 
 
 /* =====================
@@ -53,7 +66,11 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  _.forEach(markers, function(m) {
+    map.removeLayer(m)
+  });
+};
 
 /* =====================
   Optional, stretch goal
