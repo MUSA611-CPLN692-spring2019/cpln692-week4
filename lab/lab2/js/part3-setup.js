@@ -8,7 +8,7 @@
 ===================== */
 var myData;
 var myMarkers = [L.marker([39.9522, -75.1639])];
-var numericField1, numericField2, booleanField, stringField;
+var numericField1, numericField2, booleanField , stringField;
 
 /* =====================
   Set up our map
