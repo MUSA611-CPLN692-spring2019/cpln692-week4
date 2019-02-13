@@ -34,10 +34,18 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json");
+var parseData = function(url) { return JSON.parse(url); };
+var makeMarkers = function(json) {
+  var markers = [];
+  _.each(json, function(feature) {
+    markers.push(L.marker([feature.lat_final, feature.long_final]));
+  });
+  return markers;
+};
+var plotMarkers = function(markers) {
+  _.each(markers, function(m) { m.addTo(map); });
+};
 
 
 /* =====================
@@ -53,7 +61,11 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  _.each(markers, function(m) {
+    map.removeLayer(m);
+  });
+};
 
 /* =====================
   Optional, stretch goal
