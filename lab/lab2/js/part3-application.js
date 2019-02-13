@@ -28,9 +28,10 @@
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
 var resetMap = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  _.each(myMarkers, function(marker){
+    map.removeLayer(marker);
+  });//remove the markers
+  myMarkers = []; //clean the marker array
 };
 
 /* =====================
@@ -39,17 +40,36 @@ var resetMap = function() {
   it down!
 ===================== */
 var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  urlCrime = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json"
+  $.ajax(urlCrime).done(function(url){
+    myData = JSON.parse(url);
+  })
 };
+
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
 var plotData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+
+  var filteredData = [];
+  _.each(myData, function(obj){
+    if(obj.District >= numericField1 && obj.District <= numericField2 && obj["General Crime Category"].includes(capitalizeFirstLetter(stringField))) {
+      filteredData.push(obj);
+    };
+  })
+
+  _.each(filteredData, function(obj){
+    var marker = L.marker([obj.Lat, obj.Lng]).addTo(map);
+    if(booleanField){
+      marker = marker.bindPopup("DC Number: " + String(obj["DC Number"]))
+    }
+    marker;
+    myMarkers.push(marker);
+  })
 };
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
