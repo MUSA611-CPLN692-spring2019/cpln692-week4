@@ -19,7 +19,11 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(str) {
+  if(str.length>=5) {
+      return 'testing';
+  }
+};
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -94,6 +98,12 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
+var call = $.ajax(phillyCrimeDataUrl).done(function(ajaxResponseValue) {
+  // a function that does some kind of transformation on the response
+  var computedValue = ajaxResponseValue;
+  // Logging our computed result (within the body of the ajax function)
+  console.log(computedValue);
+});
 
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
@@ -103,12 +113,26 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   Remember to call all code within the function body. Use console.log to make sure
   that this step is completed before moving on!
 ===================== */
-
+var call = $.ajax(phillyCrimeDataUrl).done(function(ajaxResponseValue) {
+  // a function that does some kind of transformation on the response
+  var computedValue = JSON.parse(ajaxResponseValue);
+  // Logging our computed result (within the body of the ajax function)
+  console.log(computedValue);
+});
 
 /* =====================
   Now that you've properly parsed your data, use _.each to plot the
   dataset you've pulled down.
 ===================== */
+var call = $.ajax(phillyCrimeDataUrl).done(function(ajaxResponseValue) {
+  // a function that does some kind of transformation on the response
+  var computedValue = JSON.parse(ajaxResponseValue);
+  // Logging our computed result (within the body of the ajax function)
+  _.each(computedValue, function(x) {
+      L.marker([x.Lat, x.Lng]).addTo(map);
+  });
+});
+
 
 
 /* =====================

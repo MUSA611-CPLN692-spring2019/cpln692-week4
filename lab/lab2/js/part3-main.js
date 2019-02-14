@@ -24,7 +24,6 @@ $('button#my-button').click(function(e) {
   stringField = $('#string').val();
   console.log("stringField", stringField);
 
-
   /* =====================
     Call our resetMap function to remove markers from the map and clear out the array of marker
     objects
@@ -34,5 +33,7 @@ $('button#my-button').click(function(e) {
   /* =====================
     Call our plotData function. It should plot all the markers that meet our criteria
   ===================== */
+  //markerfilter(myData);
+
   plotData();
 });
