@@ -28,9 +28,9 @@
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
 var resetMap = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  _.each(myMarkers, function(marker){
+  map.removeLayer(marker);});
+  myMarkers = [];
 };
 
 /* =====================
@@ -39,9 +39,11 @@ var resetMap = function() {
   it down!
 ===================== */
 var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  var parsed_data = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json")
+  .done(function(ajaxResponseValue) {
+  myData = JSON.parse(ajaxResponseValue);
+  });
+  //return parsed_data;
 };
 
 /* =====================
@@ -49,7 +51,22 @@ var getAndParseData = function() {
   criteria happens to be — that's entirely up to you)
 ===================== */
 var plotData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  var return_list = [];//set criteria
+  _.each(myData, function(record) {
+    if ((record.PSA > numericField1 && record.PSA < numericField2)&&
+        (record["General Crime Category"] == stringField)&&
+        (booleanField&&record.District==1))
+    {
+    return_list.push(record);
+    }
+  });
+  console.log(return_list);
+  //begin adding markers
+  _.each(return_list, function(element){
+    myMarkers.push(L.marker([element.Lat, element.Lng]));
+  });
+  console.log(myMarkers);
+
+  _.each(myMarkers, function(marker){
+  marker.addTo(map);});
 };
