@@ -34,11 +34,19 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
-
+var downloadData = $.ajax("http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json");
+var parseData = function(ajaxResponseValue) {return JSON.parse(ajaxResponseValue);};
+var makeMarkers = function(parsed_Data) {
+  var markers = [];
+  _.each(parsed_Data, function(element){
+    markers.push(L.marker([element.Lat, element.Lng]));
+  });
+  return markers;
+};
+var plotMarkers = function(markers) {
+  _.each(markers, function(marker){
+  marker.addTo(map);});
+};
 
 /* =====================
   Define the function removeData so that it clears the markers you've written
@@ -53,7 +61,10 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  _.each(markers, function(marker){
+  map.removeLayer(marker);});
+};
 
 /* =====================
   Optional, stretch goal
@@ -62,7 +73,16 @@ var removeMarkers = function() {};
 
   Note: You can add or remove from the code at the bottom of this file.
 ===================== */
-
+var parseData = function(ajaxResponseValue) {
+  var filtered = JSON.parse(ajaxResponseValue);
+  var return_list = [];
+  _.each(filtered, function(record) {
+    if (record["General Crime Category"] === "Rape") {
+    return_list.push(record);
+    }
+  });
+  return return_list;
+};
 /* =====================
  Leaflet setup - feel free to ignore this
 ===================== */
