@@ -34,11 +34,23 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json");
 
+var parseData = function(data) {return JSON.parse(data)};
+
+var makeMarkers = function(array) {
+  var newmarkers = []
+    _.each(array,function(obj){
+    newmarkers.push(L.marker([obj.Lat, obj.Lng]))
+  });
+    return newmarkers
+  };
+
+var plotMarkers = function(newmarker) {
+  _.each(newmarker,function(marker){
+    marker.addTo(map)
+  })
+};
 
 /* =====================
   Define the function removeData so that it clears the markers you've written

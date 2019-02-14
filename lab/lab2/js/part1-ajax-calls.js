@@ -94,6 +94,15 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
+var data;
+$.ajax(phillySolarInstallationDataUrl).done(function(ajaxResponseValue) {
+  var jsdata = JSON.parse(ajaxResponseValue);
+  console.log(jsdata);
+  _.each(jsdata,function(obj){
+    L.marker([obj.LAT, obj.LONG_]).addTo(map);
+  })
+});
+
 
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
@@ -103,6 +112,7 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   Remember to call all code within the function body. Use console.log to make sure
   that this step is completed before moving on!
 ===================== */
+
 
 
 /* =====================

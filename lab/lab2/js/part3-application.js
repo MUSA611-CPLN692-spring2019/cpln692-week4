@@ -31,18 +31,28 @@ var resetMap = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+_.each(myMarkers,function(markers){
+  map.removeLayer(markers)
+  });
+  myMarkers=[]
 };
+
 
 /* =====================
   Define a getAndParseData function to grab our dataset through a jQuery.ajax call ($.ajax). It
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
-var getAndParseData = function() {
+var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
+
+var getAndParseData = function(){
+  $.ajax(phillyCrimeDataUrl).done(function(ajaxResponseValue){
+    var jsdata = JSON.parse(ajaxResponseValue);
   /* =====================
     Fill out this function definition
   ===================== */
-};
+});
+
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
@@ -52,4 +62,20 @@ var plotData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
-};
+var newMarkers = [];
+_.each(jsdata,function(obj){
+  if(obj["UCR Code"]> numericField1 && obj["UCR Code"]< numericField2 && obj["General Crime Category"] == stringField){
+    newMarkers.push(obj);
+  };
+  _.each(newMarkers,function(obj){
+  var marker= L.marker([obj.Lat, obj.Lng]).addTo(map);
+  });
+  if (booleanField){
+    _.each(newMarkers,function(obj){
+      marker = marker.bindPopup(`Location Block: ${obj["Location Block"]}`)
+    });
+  };
+  marker;
+  myMarkers.push(marker);
+  });
+}}
