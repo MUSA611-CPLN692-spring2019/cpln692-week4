@@ -19,7 +19,11 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(str) {
+    return str.length >= 5;
+  };
+
+
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -30,15 +34,18 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {
+  return console.log(num * 2);
+};
 var theArray = [1, 5, 20, 100];
 
+_.each(theArray, logDouble);
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
   over, it will equal ['fizz', 'buzz', 'fizzbuzz'];
 ===================== */
-var fizzbuzzArray = [];
+var fizzbuzzArray = [3, 5, 15];
 var fizzbuzzFunc = function(num) {
   var str = '';
   if (num % 3 === 0) { str = 'fizz'; }
@@ -94,7 +101,6 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
-
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
   objects to really work with it. Use the function `JSON.parse` on the string you
@@ -110,6 +116,14 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   dataset you've pulled down.
 ===================== */
 
+$.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json").done(function(ajaxResponseValue) {
+  var solarData = JSON.parse(ajaxResponseValue);
+  console.log(solarData);
+  _.forEach(solarData, function(obj) {
+    popupText = obj.name;
+    L.marker([obj.LAT, obj.LONG_]).bindPopup(popupText).addTo(map);
+  });
+});
 
 /* =====================
  Leaflet setup - feel free to ignore this
