@@ -27,10 +27,10 @@
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
-var resetMap = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+var resetMap = function () {
+  _.forEach(myMarkers, function(marker){
+    map.removeLayer(marker);
+  });
 };
 
 /* =====================
@@ -38,18 +38,35 @@ var resetMap = function() {
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
-var getAndParseData = function() {
+
   /* =====================
     Fill out this function definition
   ===================== */
-};
+var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
+
+var getAndParseData = function() {
+  $.ajax(phillySolarInstallationDataUrl).done(function(ajaxResponseValue){
+    solarData = JSON.parse(ajaxResponseValue);
+    console.log(solarData);
+  }); };
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
-var plotData = function() {
+
   /* =====================
     Fill out this function definition
   ===================== */
+var plotData = function() {
+  _.each(solarData, function(obj){
+    var marker;
+    if (booleanField && obj.KW > 10) {
+      marker = L.marker([obj.LAT, obj.LONG_]).bindPopup(obj.NAME + ' -ZAP!').addTo(map);
+    }
+    if (obj.KW > numericField1 && obj.KW < numericField2) {
+      marker = L.marker([obj.LAT, obj.LONG_]).bindPopup(obj.NAME + ' -zap.').addTo(map);
+    }
+    myMarkers.push(marker);
+  });
 };

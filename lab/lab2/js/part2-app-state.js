@@ -34,10 +34,29 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json");
+
+var parseData = function(web) {
+  return JSON.parse(web);
+};
+
+var makeMarkers = function(solarData) {
+  var markers = [];
+  _.forEach(solarData, function(obj) {
+    markers.push(L.circleMarker([obj.LAT, obj.LONG_],{
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 15
+    }));
+  });
+  return markers;};
+
+var plotMarkers = function(markers) {
+  _.forEach(markers, function(i){
+    i.addTo(map);
+  });
+};
 
 
 /* =====================
@@ -53,7 +72,11 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  _.forEach(markers, function(i){
+    map.removeLayer(i);
+  });
+};
 
 /* =====================
   Optional, stretch goal
