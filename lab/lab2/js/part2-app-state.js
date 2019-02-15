@@ -25,7 +25,9 @@
   NOTE 2: These functions are being called for you. Look to the bottom of this file
        to see where and how the functions you are defining will be used. Remember
        that function calls (e.g. func();) which are equal to a value (i.e. you
-       can set a var to it: var result = func();) must use the 'return' keyword.
+       can set a var to it:
+
+       var result = func();) must use the 'return' keyword.
 
        var justOne = function() {
          return 1;
@@ -38,7 +40,22 @@ var downloadData = $.ajax("http://");
 var parseData = function() {};
 var makeMarkers = function() {};
 var plotMarkers = function() {};
-
+var downloadData=$.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json").done(function(ajaxResponseValue) {
+var parsed=function(string) {
+  return JSON.parse(string);
+};
+var makeMarkers = function(data) {
+  var markers = []
+  _.each(data, function(obj){
+    markers.push(L.marker([obj.Lat, obj.Lng]))
+  })
+  return markers;
+};
+var plotMarkers = function(markers) {
+  _.each(markers, function(marker){
+    marker.addTo(map)
+  })
+};
 
 /* =====================
   Define the function removeData so that it clears the markers you've written
@@ -54,7 +71,11 @@ var plotMarkers = function() {};
 ===================== */
 
 var removeMarkers = function() {};
-
+var removeMarkers = function(markers) {
+  _.each(markers, function(marker){
+    map.removeLayer(marker);
+  })
+};
 /* =====================
   Optional, stretch goal
   Write the necessary code (however you can) to plot a filtered down version of
@@ -66,6 +87,7 @@ var removeMarkers = function() {};
 /* =====================
  Leaflet setup - feel free to ignore this
 ===================== */
+
 
 var map = L.map('map', {
   center: [39.9522, -75.1639],
