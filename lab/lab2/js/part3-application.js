@@ -46,6 +46,8 @@ var resetMap = function(data) {
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
+
+var solarPhilly;
 var getAndParseData = function() {
   /* =====================
     Fill out this function definition
@@ -53,22 +55,29 @@ var getAndParseData = function() {
 
   //get url data
   var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json");
+  //create function for parsing data
   var parseData = function() {
+    //store data in a variable
     var download = downloadData;
     download.done(function(res) {
-    solarPhilly =  JSON.parse(res);
-    console.log(solarPhilly);
+      //store JSON (parsed data) in a new variable
+      var solarPhilly =  JSON.parse(res);
+      //console log the parsed data
+      console.log(solarPhilly);
     })
 
 };
-
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
-var plotData = function() {
+var plotData = function(data) {
   /* =====================
     Fill out this function definition
   ===================== */
+
+  _.forEach(data, function(point) {
+    L.marker([point.LAT, point.LONG_]).addTo(map);
+
 };

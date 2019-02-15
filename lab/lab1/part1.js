@@ -140,15 +140,20 @@ Whole Wheat ... $4.49
 
 //printMenu(query7);
 
+//input for the function is the menu object
 var menuFunction = function (menu) {
+//first for loop gets each key in menu i.e., cake and bread
  for (i in menu){
+   //print the first item in the menu object
    console.log(i);
+   //second for loop loops through the length of the array objects under each key in the menu
    for (var k = 0; k < menu[i].length; k = k+1){
+     //print name of each item and the price in the array for cake and bread
      console.log(menu[i][k].name + " " + menu[i][k].price);
    }
  }
 };
-
+//call menu function
 menuFunction(query7)
 
 /* =====================
