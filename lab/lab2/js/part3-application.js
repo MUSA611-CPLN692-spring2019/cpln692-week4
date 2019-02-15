@@ -27,10 +27,12 @@
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
-var resetMap = function() {
+var resetMap = function(markers) {
   /* =====================
     Fill out this function definition
   ===================== */
+      _.each(markers, (obj) => {return map.removeLayer(obj)});
+      _.each(markers, (obj) => {return markers.pop()})
 };
 
 /* =====================
@@ -38,18 +40,39 @@ var resetMap = function() {
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
-var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
-};
+
+var getAndParseData = function(downloadData) {
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json")
+.done((downloadData) => {
+    parsed = JSON.parse(downloadData);
+    return parsed;
+    }
+  )
+}
+
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
+var filterData = function(y) {
+    var filterdata = [];
+    for(i = 0; i < y.length; i++){
+    if (y[i]['UCR Code'] >= numericField1 && y[i]['UCR Code'] <= numericField2 && y[i]['General Crime Category'] == stringField &&
+ (y[i].District == 24) == booleanField) {
+     filterdata.push(y[i]);
+    }
+  }
+}
+
 var plotData = function() {
+  _.each(filterData(parsed),function(filterdata){return L.marker([filterdata.Y, filterdata.X]).bindPopup("Location Block").addTo(map)})
+}
+
+
+
+
+
   /* =====================
     Fill out this function definition
   ===================== */
-};
