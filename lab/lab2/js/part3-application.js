@@ -30,7 +30,7 @@
 var resetMap = function() {
   _.each(myMarkers, function(x) {
     map.removeLayer(x); });
-  myMarkers = null; };
+  myMarkers = [] };
 
 /* =====================
   Define a getAndParseData function to grab our dataset through a jQuery.ajax call ($.ajax). It
@@ -44,6 +44,8 @@ var getAndParseData = function() {
      function(par){
         parsed = JSON.parse(par);
         console.log("Parsed the data!");
+        resetMap();
+        plotData();
   });
 };
 
@@ -53,17 +55,18 @@ var getAndParseData = function() {
 ===================== */
 var plotData = function (json) {
   _.each(parsed, function (obj) {
-    //var markers;
     if(obj.YEARBUILT >=numericField1 && obj.YEARBUILT <=numericField2) {
       x = L.marker([obj.LAT, obj.LONG_])
            .bindPopup(obj.NAME +'<br>'+obj.ZIPCODE)
            .addTo(map);
+      myMarkers.push(x);
     }
     if(booleanField && obj.KW>20){
       x = L.marker([obj.LAT, obj.LONG_])
            .bindPopup(obj.NAME +'<br>'+obj.ZIPCODE)
            .addTo(map);
+      myMarkers.push(x);
     }
-    myMarkers.push(x);
+
   });
 };
