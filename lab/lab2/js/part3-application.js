@@ -42,7 +42,7 @@ var resetMap = function(markers) {
 ===================== */
 
 var getAndParseData = function(downloadData) {
-var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json")
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json")
 .done((downloadData) => {
     parsed = JSON.parse(downloadData);
     return parsed;
