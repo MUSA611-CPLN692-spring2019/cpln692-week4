@@ -27,10 +27,18 @@
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
-var resetMap = function() {
+
+var resetMap = function(data) {
   /* =====================
     Fill out this function definition
   ===================== */
+
+  //parse through the data (list) to remove the marker
+  //using map function (instead of _.forEach) since I wanted to have a return value
+  return _.map(data, function(point) {
+    return map.removeLayer(point);
+  });
+
 };
 
 /* =====================
@@ -42,7 +50,18 @@ var getAndParseData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+
+  //get url data
+  var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json");
+  var parseData = function() {
+    var download = downloadData;
+    download.done(function(res) {
+    solarPhilly =  JSON.parse(res);
+    console.log(solarPhilly);
+    })
+
 };
+
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
