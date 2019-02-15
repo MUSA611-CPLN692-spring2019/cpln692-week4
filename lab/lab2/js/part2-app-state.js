@@ -34,10 +34,18 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json");
+var parseData = function(rawData) {return JSON.parse(rawData);};
+var makeMarkers = function(pData) {
+  var markers = [];
+  _.each(pData, (dataLine) => {markers.push(L.marker([dataLine.Lat, dataLine.Lng]))});
+  return markers;
+};
+var plotMarkers = function(marker) {
+  _.each(marker, (mark) => {
+    mark.addTo(map);
+  });
+};
 
 
 /* =====================
@@ -53,7 +61,11 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  _.each(markers, (rmMarker) => {
+    map.removeLayer(rmMarker);
+  });
+};
 
 /* =====================
   Optional, stretch goal
@@ -69,7 +81,7 @@ var removeMarkers = function() {};
 
 var map = L.map('map', {
   center: [39.9522, -75.1639],
-  zoom: 14
+  zoom: 13
 });
 var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -85,7 +97,9 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 
 downloadData.done(function(data) {
   var parsed = parseData(data);
+  //console.log(parsed);
   var markers = makeMarkers(parsed);
+  //console.log(markers);
   plotMarkers(markers);
   removeMarkers(markers);
 });
