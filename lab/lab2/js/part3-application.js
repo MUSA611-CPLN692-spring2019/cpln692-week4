@@ -28,9 +28,10 @@
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
 var resetMap = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  _.forEach(myMarkers, function(o) {
+    map.removeLayer(o);
+  });
+  myMarkers = null;
 };
 
 /* =====================
@@ -39,17 +40,58 @@ var resetMap = function() {
   it down!
 ===================== */
 var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  var Url = "http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
+  var d = $.ajax(Url).done(function(d) {
+    myData = JSON.parse(d);
+  });
 };
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
+// Define a filter function to check each entry if they match the user defined criteria.
+var filter = function(list2bchecked) {
+  var filteredlist = [];
+  for (var i = 0; i < list2bchecked.length; i++) {
+    let checker = 0; // To record the number of checks that each entry passes.
+
+    // UCR Code Check.
+    if (list2bchecked[i]["UCR Code"] >= numericField1 && list2bchecked[i]["UCR Code"] <= numericField2) {
+      checker++;
+    }
+    // Location block check.
+    var lb_upperCase = list2bchecked[i]['Location Block'].toUpperCase(); // Set everything to uppercase so that it doesnt matter.
+    if (lb_upperCase.includes(stringField,)) {
+      checker++;
+    }
+    // PSA=1 check.
+    if (booleanField==true) {
+      if (list2bchecked[i]['PSA']==1){checker++;} // Check if PSA is 1, but only if user requires.
+    } else {checker++;} // If user does not specify PSA=1, then this check auto-passes.
+
+    // If all 3 checks are true
+    if (checker == 3) {
+      filteredlist.push(list2bchecked[i]);
+    }
+  };
+  return filteredlist;
+}
+
+var makeMarkers = function (ll){
+  var listofmarkers=[];
+  _.each(ll, function(o){listofmarkers.push(L.marker([o.Lat, o.Lng]))});
+  return listofmarkers;
+}
+
+var plotMarkers = function(ll) {
+  _.each(ll, function(o){o.addTo(map);});
+};
+
 var plotData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  var tobeplotted = filter(myData);
+  console.log("FOUND " + tobeplotted.length + ' CRIMES THAT MATCH.');
+
+  myMarkers = makeMarkers(tobeplotted);
+  plotMarkers(myMarkers);
 };

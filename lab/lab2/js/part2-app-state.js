@@ -34,10 +34,22 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json");
+
+var parseData = function(data) {
+  return JSON.parse(data);
+};
+
+var makeMarkers = function(list) {
+  var listofmarkers=[];
+  _.each(list, function(o){listofmarkers.push(L.marker([o.Lat, o.Lng]))});
+  return listofmarkers;
+};
+
+var plotMarkers = function(list) {
+  //console.log(list);
+  _.each(list, function(o){o.addTo(map);});
+};
 
 
 /* =====================
@@ -53,7 +65,9 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(listofmarkers) {
+  _.each(listofmarkers, function(o){map.removeLayer(o);});
+};
 
 /* =====================
   Optional, stretch goal
@@ -86,6 +100,7 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 downloadData.done(function(data) {
   var parsed = parseData(data);
   var markers = makeMarkers(parsed);
+
   plotMarkers(markers);
   removeMarkers(markers);
 });
