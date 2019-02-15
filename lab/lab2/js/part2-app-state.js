@@ -1,4 +1,4 @@
-/* =====================
+  /* =====================
   Lab 2, part 2 - application state
 
   Spatial applications aren't typically as simple as putting data on a map. In
@@ -34,10 +34,17 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("datasets/geojson/HousingCounselingAgencies.geojson");
+var parseData = function(data) {
+  return JSON.parse(data);
+};
+var makeAMarker = function(list) {
+  var listOfMarkers=[];
+  _.each(list, function(obj){listOfMarkers.push(L.marker([obj.Lat, obj.Lng]));});
+  return listOfMarkers;
+};
+var plotMarkers = function(list) {_.each(list, function(obj){obj.addTo(map);});
+};
 
 
 /* =====================
@@ -53,7 +60,7 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(list) {_.each(list, function(obj){map.removeLayer(obj);});};
 
 /* =====================
   Optional, stretch goal
@@ -85,7 +92,8 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 
 downloadData.done(function(data) {
   var parsed = parseData(data);
-  var markers = makeMarkers(parsed);
+  var markers = makeAMarker(parsed);
+  var markersFilter = function(listNotFiltered){_.filter(listNotFiltered, function(a){return a.HOUSE<2000;});};
   plotMarkers(markers);
-  removeMarkers(markers);
+  removeMarkers(markersFilter(markers));
 });
