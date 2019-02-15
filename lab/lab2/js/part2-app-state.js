@@ -34,11 +34,31 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json");
 
+var parseData = function(data) {
+  var computedValue = JSON.parse(data);
+  console.log("data parsed");
+  return computedValue;
+}
+
+var makeMarkers = function(parsed) {
+  var makeMarkers_ = (i) => {
+    return L.marker([i.Y,i.X]).bindPopup(i.NAME);
+  };
+  var allMarkers = _.map(parsed, makeMarkers_);
+  console.log("markers made");
+  return allMarkers;
+};
+
+var plotMarkers = function(markers) {
+  var plotMarkers_ = (i) => {
+    return i.addTo(map);
+  }
+  var plottedMarkers = _.map(markers, plotMarkers_);
+  console.log("markers ploted");
+  return plottedMarkers;
+};
 
 /* =====================
   Define the function removeData so that it clears the markers you've written
@@ -53,7 +73,10 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  console.log("markers removed");
+  return _.each(markers, function(i) {return map.removeLayer(i);});
+};
 
 /* =====================
   Optional, stretch goal

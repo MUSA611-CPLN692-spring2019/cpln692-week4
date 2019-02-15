@@ -11,6 +11,8 @@ getAndParseData();
   The code here is triggered when you click on the button with ID #my-button
   ALL functions called here will be called EVERY time a click event fires
 ===================== */
+var markers = [];
+
 $('button#my-button').click(function(e) {
   numericField1 = $('#num1').val();
   console.log("numericFieldMin", numericField1);
@@ -29,10 +31,10 @@ $('button#my-button').click(function(e) {
     Call our resetMap function to remove markers from the map and clear out the array of marker
     objects
   ===================== */
-  resetMap();
+  resetMap(markers);
 
   /* =====================
     Call our plotData function. It should plot all the markers that meet our criteria
   ===================== */
-  plotData();
+  markers = plotData();
 });

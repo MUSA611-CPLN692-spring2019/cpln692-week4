@@ -19,7 +19,13 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(str) {
+  if (str.length >= 5){
+    return true;
+  } else {
+    return false;
+  }
+};
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -30,9 +36,10 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {return num * 2;};
 var theArray = [1, 5, 20, 100];
 
+console.log(_.map(theArray, function(num) {return num * 2;}));
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
@@ -94,6 +101,18 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
+  $.ajax(phillySolarInstallationDataUrl).done(function(ajaxResponseValue){
+    // array of objects into json
+    var computedValue = JSON.parse(ajaxResponseValue);
+    console.log(computedValue);
+    //Check
+    console.log(computedValue[0]);
+
+    //make markers and map function to all points and add to map
+    var makeMarkers = (i) => {return L.marker([i.Y,i.X]).bindPopup(i.NAME).addTo(map);};
+    var allMarkers = _.map(computedValue, makeMarkers);
+
+});
 
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
