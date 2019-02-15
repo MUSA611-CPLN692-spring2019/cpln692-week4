@@ -19,7 +19,8 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(str) { return str.length>5}
+
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -30,15 +31,15 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {console.log (num*2)};
 var theArray = [1, 5, 20, 100];
-
+ _.each(theArray, function(num){(logDouble(num))})
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
   over, it will equal ['fizz', 'buzz', 'fizzbuzz'];
 ===================== */
-var fizzbuzzArray = [];
+var fizzbuzzArray = [3,5,15];
 var fizzbuzzFunc = function(num) {
   var str = '';
   if (num % 3 === 0) { str = 'fizz'; }
@@ -95,6 +96,57 @@ var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/data
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
 
+
+// var trythefirst = function() {
+//   $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json")
+//     .done(function(ajaxResponseValue) {
+//       // a function that does some kind of transformation on the response
+// 		console.log(ajaxResponseValue)
+//       CrimeData = ajaxResponseValue;
+//       _.forEach(CrimeData, function(x){
+//         // popupText = x.["General Crime Category"],
+//         // L.marker([x.["Lat"], x.["Lng"]]).addTo(map);});
+//     });
+//   };)
+// };
+
+var crimeData;
+var trythefirst = function() {
+  $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json")
+  .done(function(ajaxResponseValue) {
+    crimeData = JSON.parse(ajaxResponseValue);
+    // return crimeData
+    console.log(crimeData);
+    _.forEach(crimeData, function(x) {
+    L.marker([x.Lat, x.Lng]).addTo(map)});
+  })
+}
+trythefirst();
+
+var solarData;
+var trytheSecond = function() {
+  $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json")
+  .done(function(ajaxResponseValue) {
+    solarData = JSON.parse(ajaxResponseValue);
+    // return crimeData
+    console.log(solarData);
+    _.forEach(solarData, function(x) {
+    L.marker([x.X, x.Y]).addTo(map)});})
+}
+trytheSecond();
+
+var bikeData;
+var trythelast = function() {
+  $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json")
+  .done(function(ajaxResponseValue) {
+    solarData = JSON.parse(ajaxResponseValue);
+    // return crimeData
+    console.log(solarData);
+    _.forEach(solarData, function(x) {
+      L.marker([x.lat_final, x.long_final]).addTo(map)});
+})
+}
+trythelast();
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
   objects to really work with it. Use the function `JSON.parse` on the string you
