@@ -21,7 +21,7 @@ $('button#my-button').click(function(e) {
   booleanField = $('#boolean')[0].checked;
   console.log("booleanField", booleanField);
 
-  stringField = $('#string').val();
+  stringField = $('#string').val().toUpperCase(); // Set toUpperCase tO sImPlIfY sTuFf. <_< lol
   console.log("stringField", stringField);
 
 
