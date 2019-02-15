@@ -34,12 +34,29 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
+/*
+var downloadData = $.ajax("https://");
 var parseData = function() {};
 var makeMarkers = function() {};
 var plotMarkers = function() {};
+*/
 
-
+var downloadData= $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json");
+var parseData = function(webdata) {
+  return JSON.parse(webdata);
+};
+var makeMarkers = function(crashdata) {
+  var markers = [];
+  _.each(crashdata, function(obj){
+    markers.push(L.marker([obj.lat_final, obj.long_final]));
+  });
+  return markers;
+};
+var plotMarkers = function(markers) {
+  _.each(markers, function(marker){
+    marker.addTo(map);
+  });
+};
 /* =====================
   Define the function removeData so that it clears the markers you've written
   from the map. You'll know you've succeeded when the markers that were
@@ -52,9 +69,17 @@ var plotMarkers = function() {};
   In real applications, this will typically happen in response to changes to the
   user's input.
 ===================== */
-
-var removeMarkers = function() {};
-
+var removeMarkers = function(markers) {
+  _.each(markers, function(marker){
+    map.removeLayer(marker);
+  });
+};
+//removeMarkers(parseData);
+/*
+var removeMarkers = function(condition) {
+  map.removeLayer(marker);
+};
+removeMarkers(parseData);*/
 /* =====================
   Optional, stretch goal
   Write the necessary code (however you can) to plot a filtered down version of
