@@ -69,7 +69,6 @@ console.log(newMarkers);*/
 var markerfilter = function(y) {
   var markerfilterd = [];
   for (i = 0; i < y.length; i++) {
-    //filter a certain type of crime within certain districts, and within certain Police Service Areas (PSA 1: checked, PSA 2: unchecked)
     if (y[i]['UCR Code'] >= numericField1 && y[i]['UCR Code'] <= numericField2 && y[i]['General Crime Category'] == stringField &&
   (y[i].District == 24) == booleanField) {
       markerfilterd.push(y[i]);
