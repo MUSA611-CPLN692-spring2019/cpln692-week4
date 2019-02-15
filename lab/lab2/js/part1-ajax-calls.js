@@ -38,7 +38,7 @@ console.log("isLengthOfFiveOrMore success:",
 ===================== */
 var logDouble = function(num) {console.log(num*2)};
 var theArray = [1, 5, 20, 100];
-_.each(theA,logDouble);
+_.each(theArray,logDouble);
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
