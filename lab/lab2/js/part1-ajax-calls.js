@@ -19,11 +19,12 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
+
 var isLengthOfFiveOrMore = function(str) {};
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
-
+ 
 
 /* =====================
   Now write a 'recipe' to console.log the double of a number (i.e. n * 2). Use the
@@ -95,6 +96,13 @@ var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/data
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
 
+var testing;
+
+var callData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json").done(function(ajaxResponseValue) {
+var testing = ajaxResponseValue;
+console.log(testing);
+
+
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
   objects to really work with it. Use the function `JSON.parse` on the string you
@@ -103,12 +111,19 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   Remember to call all code within the function body. Use console.log to make sure
   that this step is completed before moving on!
 ===================== */
-
+var parsedData = JSON.parse(testing);
+console.log(parsedData);
 
 /* =====================
   Now that you've properly parsed your data, use _.each to plot the
   dataset you've pulled down.
 ===================== */
+//Code support: https://stackoverflow.com/questions/19349881/at-underscore-js-can-i-get-multiple-columns-with-pluck-method-after-input-where
+var allData = _.map(parsedData, function(obj) { return _.pick(obj, 'X', 'Y', 'NAME'); });
+
+var makeAMarker = _.map(allData, function(obj) {return L.marker([obj.Y, obj.X]).bindPopup(obj.NAME).addTo(map) })
+
+});
 
 
 /* =====================
