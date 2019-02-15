@@ -19,8 +19,14 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
-
+var isLengthOfFiveOrMore =var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(str){
+if (str.length>=5)
+return true;
+}
+else{
+return false;
+};
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
 
@@ -30,9 +36,9 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {console.log(num*2)};
 var theArray = [1, 5, 20, 100];
-
+_.each(theArray,logDouble);
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
