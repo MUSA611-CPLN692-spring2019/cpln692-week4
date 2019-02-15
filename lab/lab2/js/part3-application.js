@@ -27,10 +27,12 @@
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
-var resetMap = function() {
+var resetMap = function(myMarkers) {
   /* =====================
     Fill out this function definition
   ===================== */
+  map.removeLayer(myMarkers);
+  markerFiltered = [];
 };
 
 /* =====================
@@ -42,6 +44,22 @@ var getAndParseData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+  dat = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";).done(
+    function(a) {
+      myData = JSON.parse(a);
+      console.log(myData);
+  })
+};
+
+var markerFilter = function(list) {
+  var markerFiltered = [], i = -1;
+  for (i = 0; i < list.length; i++) {
+    if (list[i].District >= numericField1 && list[i].District <= numericField2 && list[i][General Crime Category] == stringField && (list[i].PSA == 2) == booleanField) {
+      markerFiltered.push(list[i]);
+    }
+  }
+  console.log("Number of crime: " + markerFiltered.length);
+  return markerFiltered;
 };
 
 /* =====================
@@ -52,4 +70,9 @@ var plotData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+  myMarkers = _.each(markerFilter(myData), (datum) => {
+    L.marker([datum.Lat, datum.Lng])
+    .addTo(map)
+    .bindPopup("<b>" + datum['Location Block'] + "</b>");
+  });
 };

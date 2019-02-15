@@ -34,10 +34,23 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("https://github.com/CPLN690-MUSA610/datasets/blob/master/geojson/housingprice_Beijing.geojson");
+
+var parseData = function(a) {
+  console.log(a);
+  return JSON.parse(a);
+};
+
+var makeMarkers = function(list) {
+  console.log("You are trying to make a marker");
+  var listOfMarkers = [];
+  _.each(list, function(b){listOfMarkers.push(L.marker([b.Lat, b.Lng]));});
+  console.log(list[0]);
+};
+
+var plotMarkers = function(list) {
+  _.each(list, function(c){c.addTo(map);});
+};
 
 
 /* =====================
@@ -53,7 +66,10 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(d) {
+  map.removeLayer(d);
+};
+
 
 /* =====================
   Optional, stretch goal
@@ -86,6 +102,7 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 downloadData.done(function(data) {
   var parsed = parseData(data);
   var markers = makeMarkers(parsed);
+  var filteredMarker = function(listOfMarkers){_.filter(listOfMarkers, function(e){return e.priceperm2>30000;});};
   plotMarkers(markers);
-  removeMarkers(markers);
+  removeMarkers(filteredMarker(markers));
 });
