@@ -34,10 +34,25 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+// Define function
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json");
+var parseData = function(data) {
+  return JSON.parse(data);
+};
+
+
+var makeMarkers = function(parsed) {
+  var markers = [];
+  for (let i = 0; i< parsed.length; i++){
+    var a = L.marker([parsed[i].Y,parsed[i].X]);
+    markers.push(a);}
+  return markers
+};
+
+var plotMarkers = function(data) {
+  for (let i = 0; i< data.length; i++){
+    data[i].addTo(map)}};
+
 
 
 /* =====================
@@ -53,7 +68,9 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(data) {
+  _.each(data, (obj) => {return map.removeLayer(obj)});
+};
 
 /* =====================
   Optional, stretch goal
@@ -63,6 +80,13 @@ var removeMarkers = function() {};
   Note: You can add or remove from the code at the bottom of this file.
 ===================== */
 
+var plotFilterMarkers = function(data) {
+  _.filter(data, (data) => {return data.ZIPCODE > 19104})//.addTo(map)
+}
+
+var filterParsed = function(data) {
+  _.filter(data, (data) => {return data.ZIPCODE > 19104}).push()
+}
 /* =====================
  Leaflet setup - feel free to ignore this
 ===================== */
@@ -83,9 +107,33 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
  CODE EXECUTED HERE!
 ===================== */
 
+// Simply plot and remove markers
+/*downloadData.done(function(data) {
+  var parsed = parseData(data);
+  console.log(parsed);
+  var markers = makeMarkers(parsed);
+  console.log(markers);
+  plotMarkers(markers);    //plot the markers
+  removeMarkers(markers);  // remove them
+});*/
+
+
+// Try to filter the data
 downloadData.done(function(data) {
   var parsed = parseData(data);
   var markers = makeMarkers(parsed);
-  plotMarkers(markers);
+  plotFilterMarkers(markers);
   removeMarkers(markers);
+});
+
+var parsed = [];
+var filterdata = [];
+downloadData.done(function(data) {
+  parsed = parseData(data);
+  console.log(parsed);
+  filterdata = filterParsed(parsed);
+//  return filterParsed;
+  console.log(filterdata);
+//  plotFilterMarkers(markers);
+//  removeMarkers(markers);
 });

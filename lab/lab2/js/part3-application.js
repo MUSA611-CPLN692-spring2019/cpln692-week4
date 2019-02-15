@@ -27,10 +27,12 @@
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
-var resetMap = function() {
+var resetMap = function(markers) {
   /* =====================
     Fill out this function definition
   ===================== */
+      _.each(markers, (obj) => {return map.removeLayer(obj)});
+      _.each(markers, (obj) => {return markers.pop()})
 };
 
 /* =====================
@@ -42,6 +44,12 @@ var getAndParseData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+  $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json")
+  .done((data) => {
+    return JSON.parse(data);
+    console.log(data);
+    }
+  )
 };
 
 /* =====================
