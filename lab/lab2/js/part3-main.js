@@ -23,6 +23,7 @@ $('button#my-button').click(function(e) {
 
   stringField = $('#string').val();
   console.log("stringField", stringField);
+  console.log(myData)
 
 
   /* =====================

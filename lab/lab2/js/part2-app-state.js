@@ -34,16 +34,28 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json");
+var parseData = function(downloadedData) {
+  return JSON.parse(downloadedData);
+};
+var makeMarkers = function(parsedData) {
+  var maker = [];
+  _.forEach(parsedData, function(x){
+    maker.push(L.marker([x.Lat, x.Lng]));
+  });
+  return maker;
+};
+var plotMarkers = function(y) {
+  _.forEach(y, function(z){
+    z.addTo(map);
+  });
+};
 
 
 /* =====================
   Define the function removeData so that it clears the markers you've written
   from the map. You'll know you've succeeded when the markers that were
-  previously displayed are immediately removed from the map.
+  previously displayed are immediately removed fr om the map.
 
   In Leaflet, the syntax for removing one specific marker looks like this:
 
@@ -84,8 +96,9 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 ===================== */
 
 downloadData.done(function(data) {
+  console.log(data);
   var parsed = parseData(data);
   var markers = makeMarkers(parsed);
   plotMarkers(markers);
-  removeMarkers(markers);
+//  removeMarkers(markers);
 });

@@ -19,8 +19,7 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
-
+var isLengthOfFiveOrMore = function(str) {return str.length>5};
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
 
@@ -30,15 +29,15 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {console.log(num*2)};
 var theArray = [1, 5, 20, 100];
-
+_.each(theArray, function(num){logDouble(num)});
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
   over, it will equal ['fizz', 'buzz', 'fizzbuzz'];
 ===================== */
-var fizzbuzzArray = [];
+var fizzbuzzArray = [3, 5, 15];
 var fizzbuzzFunc = function(num) {
   var str = '';
   if (num % 3 === 0) { str = 'fizz'; }
@@ -94,6 +93,30 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
+var crimedata;
+var layerGroup
+
+// async ajax call
+var getCrimeData = function() {
+  $.ajax(phillyCrimeDataUrl).done(function(ajaxResponseValue) {
+      crimedata = JSON.parse(ajaxResponseValue);
+      console.log(crimedata);
+      _.forEach(crimedata, function(x){
+          L.marker([x.Lat, x.Lng]).addTo(map);
+        });
+      })
+  }
+
+
+// run the ajax function
+getCrimeData();
+// create a feature group to provide additional controls over the markers
+// read more about layer groups here: https://leafletjs.com/examples/layers-control/
+// It makes it easier to control a group of markers
+
+
+/*  ----  THIS IS HOW YOU CLEAR A LAYER GROUP   ----- */
+// layerGroup.clearLayers();
 
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
