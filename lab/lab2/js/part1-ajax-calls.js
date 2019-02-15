@@ -19,10 +19,15 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore =(str)=> {return str.length >= 5};
+
 
 console.log("isLengthOfFiveOrMore success:",
-  _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
+  _.isEqual(
+    _.filter(
+      ['this', 'is','a', 'test', 'testing'],
+      isLengthOfFiveOrMore),
+    ['testing']));
 
 
 /* =====================
@@ -30,15 +35,17 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+
 var theArray = [1, 5, 20, 100];
+var logDouble = (n) => {console.log(n*2);};
+_.each(theArray,logDouble);
 
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
   over, it will equal ['fizz', 'buzz', 'fizzbuzz'];
 ===================== */
-var fizzbuzzArray = [];
+var fizzbuzzArray = [3,5,15];
 var fizzbuzzFunc = function(num) {
   var str = '';
   if (num % 3 === 0) { str = 'fizz'; }
@@ -91,8 +98,8 @@ console.log("fizzbuzz success:",
 
 ===================== */
 var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
-var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
-var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
+// var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
+// var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
 
 /* =====================
@@ -105,16 +112,6 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
 ===================== */
 
 
-/* =====================
-  Now that you've properly parsed your data, use _.each to plot the
-  dataset you've pulled down.
-===================== */
-
-
-/* =====================
- Leaflet setup - feel free to ignore this
-===================== */
-
 var map = L.map('map', {
   center: [39.9522, -75.1639],
   zoom: 14
@@ -126,3 +123,50 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
   maxZoom: 20,
   ext: 'png'
 }).addTo(map);
+
+
+var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
+
+
+var popupText;
+var Solarpanels;
+var panels;
+
+
+var getSolarPanel = function(){
+  $.ajax(phillySolarInstallationDataUrl).done(function(ajaxResponseValue){
+
+    console.log("Inside the ajax");
+    Solarpanels = JSON.parse(ajaxResponseValue);
+    console.log("Successfully parsed the string into objects");
+
+    _.each(Solarpanels,
+      function(x){
+        popupText = x.NAME;
+
+        L.marker([x.LAT,x.LONG_])
+         .bindPopup(popupText)
+         .addTo(layerGroup);
+       });
+    });
+ };
+
+getSolarPanel();
+
+var layerGroup = L.featureGroup().addTo(map);
+
+// _.forEach(Solarpanels, function(i)){
+//   popupText = i.NAME;
+//   L.marker([i.LONG,i.LAT])
+//    .bindPopup(popupText)
+//    .addTo(layerGroup);
+// }
+/* =====================
+  Now that you've properly parsed your data, use _.each to plot the
+  dataset you've pulled down.
+===================== */
+
+
+/* =====================
+ Leaflet setup - feel free to ignore this
+===================== */
