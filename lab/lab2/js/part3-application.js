@@ -27,10 +27,10 @@
 /* =====================
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
-var resetMap = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+var resetMap = function(myMarkers) {
+  _.forEach(myMarkers, function(k) {
+    map.removeLayer(k);
+  });
 };
 
 /* =====================
@@ -38,17 +38,34 @@ var resetMap = function() {
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
+var crimelist;
 var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json")
+  .done(function(res) {
+    crimelist = JSON.parse(res);
+  });
 };
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
+var filterd = [];
+var myfilter = function(list) {
+  for (i = 0; i < list.length; i++) {
+    //filter a certain type of crime within certain districts, and within certain Police Service Areas (PSA 1: checked, PSA 2: unchecked)
+    if (list[i]['UCR Code']>= numericField1
+      && list[i]['UCR Code'] <= numericField2)  {
+      filterd.push(list[i]);
+    }
+  }
+  return filterd;
+};
+
 var plotData = function() {
+  myMarkers = _.each(myfilter(crimelist), (x) => {
+    L.marker([x.Lat, x.Lng]).addTo(map).bindPopup(x['General Crime Category']);
+  });
   /* =====================
     Fill out this function definition
   ===================== */
