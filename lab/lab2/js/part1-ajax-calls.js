@@ -19,7 +19,12 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+// var isLengthOfFiveOrMore = function(str) {
+//    return _.filter(str, function(a){return a.length > 5 })
+// };
+
+var isLengthOfFiveOrMore = (a) => {
+   return a.length > 5 };
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -30,7 +35,9 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {
+  return num * 2
+};
 var theArray = [1, 5, 20, 100];
 
 
@@ -94,7 +101,6 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
-
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
   objects to really work with it. Use the function `JSON.parse` on the string you
@@ -104,12 +110,31 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   that this step is completed before moving on!
 ===================== */
 
+/*
+var storedValue;
+$.ajax(phillyBikeCrashesDataUrl).done(function(result){
+  storedValue = JSON.parse(result);
+  console.log(storedValue);
+});*/
+
 
 /* =====================
   Now that you've properly parsed your data, use _.each to plot the
   dataset you've pulled down.
 ===================== */
 
+//created a function that gets url data, parses through it and adds markers to the map
+var getCrimeData = function() {
+  $.ajax(phillyCrimeDataUrl).done(function(res) {
+      //store data in JSON format
+      crimeData =  JSON.parse(res);
+      console.log(crimeData);
+      _.forEach(crimeData, function(point){
+        L.marker([point.Lat, point.Lng]).addTo(map);});
+    });
+};
+//call the function
+getCrimeData();
 
 /* =====================
  Leaflet setup - feel free to ignore this

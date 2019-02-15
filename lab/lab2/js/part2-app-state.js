@@ -33,12 +33,29 @@
        var one = justOne();
 ===================== */
 
-// We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+//download data from URL
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json");
 
+//change data into JSON format
+var parseData = function(data){
+   return JSON.parse(data);
+};
+
+//add markers - using map function since
+var makeMarkers = function(data) {
+  return _.map(data, function(point){
+    return L.marker([point.LAT, point.LONG_]);
+  });
+};
+
+var plotMarkers = function(data) {
+  _.forEach(data, function(point) {
+    point.addTo(map);
+  });
+};
+/*
+
+// We set this to HTTP to prevent 'CORS' issues
 
 /* =====================
   Define the function removeData so that it clears the markers you've written
@@ -53,7 +70,11 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+var removeMarkers = function(data) {
+  return _.map(data, function(point) {
+    return map.removeLayer(point);
+  });
+};
 
 /* =====================
   Optional, stretch goal
@@ -87,5 +108,19 @@ downloadData.done(function(data) {
   var parsed = parseData(data);
   var markers = makeMarkers(parsed);
   plotMarkers(markers);
-  removeMarkers(markers);
+  //removeMarkers(markers);
 });
+
+/*
+Test code for console
+var solarPhilly;
+var downloadData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json");
+var parseData = function() {
+  var download = downloadData;
+  download.done(function(res) {
+    console.log(res);
+  //store data in JSON format
+  solarPhilly =  JSON.parse(res);
+  console.log(solarPhilly);
+  })
+};*/

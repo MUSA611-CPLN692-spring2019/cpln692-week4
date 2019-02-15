@@ -63,7 +63,7 @@ Is printMenu a function? Answer this question with underscore. Should evaluate
 to true.
 ===================== */
 
-var query1;
+var query1 = _.isFunction(printMenu);
 
 console.log('printMenu is a function:', query1);
 
@@ -72,7 +72,7 @@ Is bakedGoods an array? Answer this question with underscore. Should evaluate
 to true.
 ===================== */
 
-var query2;
+var query2 = _.isArray(bakedGoods);
 
 console.log('bakedGoods is an array:', query2);
 
@@ -81,7 +81,7 @@ Is the first element in bakedGoods an object? Answer this question with
 underscore. Should evaluate to true.
 ===================== */
 
-var query3;
+var query3 = _.isObject(bakedGoods[0]);
 
 console.log('The first element in bakedGoods is an object:', query3);
 
@@ -89,7 +89,7 @@ console.log('The first element in bakedGoods is an object:', query3);
 Use _.where to return all cakes. Or bread. Whichever is your favorite.
 ===================== */
 
-var query4;
+var query4 = _.filter(bakedGoods, function(a) {return a.type == "Cake"});
 
 console.log('All bread. Or cakes:', query4);
 
@@ -97,7 +97,7 @@ console.log('All bread. Or cakes:', query4);
 Use _.filter to return all baked goods that cost more than $4.
 ===================== */
 
-var query5;
+var query5 = _.filter(bakedGoods, function(a) {return a.price > 4});;
 
 console.log('More than $4:', query5);
 
@@ -105,7 +105,8 @@ console.log('More than $4:', query5);
 Use _.sortBy to order the list by inventory (from lowest to highest).
 ===================== */
 
-var query6;
+var query6 = _.sortBy(bakedGoods, 'inventory');
+;
 
 console.log('Sorted by inventory (lowest to highest):', query6);
 
@@ -113,7 +114,7 @@ console.log('Sorted by inventory (lowest to highest):', query6);
 Use _.groupBy to organize the baked goods by type.
 ===================== */
 
-var query7;
+var query7 = _.groupBy(bakedGoods, 'type');
 
 console.log('Grouped by type:', query7);
 
@@ -137,7 +138,23 @@ Rye ... $5.09
 Whole Wheat ... $4.49
 ===================== */
 
-// printMenu(query7);
+//printMenu(query7);
+
+//input for the function is the menu object
+var menuFunction = function (menu) {
+//first for loop gets each key in menu i.e., cake and bread
+ for (i in menu){
+   //print the first item in the menu object
+   console.log(i);
+   //second for loop loops through the length of the array objects under each key in the menu
+   for (var k = 0; k < menu[i].length; k = k+1){
+     //print name of each item and the price in the array for cake and bread
+     console.log(menu[i][k].name + " " + menu[i][k].price);
+   }
+ }
+};
+//call menu function
+menuFunction(query7)
 
 /* =====================
 Stretch Goal:
