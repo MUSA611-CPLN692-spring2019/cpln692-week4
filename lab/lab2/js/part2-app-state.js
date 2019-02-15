@@ -119,6 +119,7 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 
 
 // Try to filter the data
+console.log("before")
 downloadData.done(function(data) {
   var parsed = [];
   parsed = parseData(data);
@@ -128,5 +129,7 @@ downloadData.done(function(data) {
   var markers = makeMarkers(filterdata);
   console.log(markers)
   plotMarkers(markers);
+  console.log("inside")
 //  removeMarkers(markers);
 });
+console.log("after")
