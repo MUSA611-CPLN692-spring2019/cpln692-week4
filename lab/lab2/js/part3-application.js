@@ -60,11 +60,6 @@ var getAndParseData = function() {
 /*=====================
     Fill out this function definition
   =====================*/
-/*var newMarkers = [];
-_.each(myData,function(obj){
-  if(obj["UCR Code"]> numericField1 && obj["UCR Code"]< numericField2 && obj["General Crime Category" ] == stringField ){
-      newMarkers.push(obj);
-    };
 console.log(newMarkers);*/
 var markerfilter = function(y) {
   var markerfilterd = [];
