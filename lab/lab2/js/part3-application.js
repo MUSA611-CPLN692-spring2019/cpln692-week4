@@ -31,6 +31,9 @@ var resetMap = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+var fiteredMarkers = _.filter(myData,  function(myData){
+                    return myData.YEARBUILT > 2010 && myData.YEARBUILT < 2017;
+                }); //This function tries to filter the solar installation markers by year they were built
 };
 
 /* =====================
@@ -38,18 +41,36 @@ var resetMap = function() {
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
-var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
-};
+var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
+
+var getAndParseData = function(website) {
+  var downloadData = $.ajax(website).done(function(ajaxResponseValue) {
+  console.log(ajaxResponseValue); //Downloads the data and makes sure that it downloaded properly, it did
+
+  var parseData = _.map(JSON.parse(ajaxResponseValue), function(obj) {
+    return _.pick(obj, 'Y', 'X', 'NAME');
+})
+for (var i=0; i <parseData.length; i = i+1) {
+    console.log(parseData[i]) //Loops through the raw downloaded data and parses it
+    }
+})
+}
+var myData = getAndParseData(phillySolarInstallationDataUrl) //Parses the raw data by applying the function above to the URL
+console.log(myData); //This prints the parsed data directly to the console to make sure it worked, it did
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
-var plotData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+//var plotData = function(obj) {
+
+//};
+
+var makeMarkers = function(obj) {
+    return L.marker([obj.Y, obj.X]).bindPopup(obj.NAME)
+}; //First tries to make the markers in a separate function
+for (var i=0; i <getAndParseData.length; i = i+1) {
+} // Loops through the parsed data to try and make the markers
+var plotData = function(obj) { //This function simply tries to add the markers made above to the map
+    return makeMarkers(getAndParseData[i]).addTo(map)
 };
