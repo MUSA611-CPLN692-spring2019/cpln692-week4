@@ -94,6 +94,12 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
+var testing;
+
+var callData = $.ajax(phillySolarInstallationDataUrl).done(function(ajaxResponseValue) {
+var testing = ajaxResponseValue;
+console.log(testing);
+
 
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
@@ -103,12 +109,27 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   Remember to call all code within the function body. Use console.log to make sure
   that this step is completed before moving on!
 ===================== */
-
+var parsedData = JSON.parse(testing);
+console.log(parsedData);
 
 /* =====================
   Now that you've properly parsed your data, use _.each to plot the
   dataset you've pulled down.
 ===================== */
+var allData = _.map(parsedData, function(obj) { return _.pick(obj, 'X', 'Y', 'NAME'); });
+
+for (var i=0; i <allData.length; i = i+1) {
+    console.log(allData[i])
+    }
+
+var makeAMarker = (obj) => {
+    return L.marker([obj.Y, obj.X]).bindPopup(obj.NAME)
+    }
+
+for (var i=0; i <allData.length; i = i+1) {
+    makeAMarker(allData[i]).addTo(map)
+}
+});
 
 
 /* =====================

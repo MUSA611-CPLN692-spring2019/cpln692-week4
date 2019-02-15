@@ -33,11 +33,34 @@
        var one = justOne();
 ===================== */
 
+//Copy and pasted the URL from part 1 to here just to make sure part 2 will read them as well:
+var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
+
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("http://");
-var parseData = function() {};
-var makeMarkers = function() {};
-var plotMarkers = function() {};
+var downloadData = $.ajax(phillySolarInstallationDataUrl).done(function(ajaxResponseValue) { //Extracts the data from the phillySolarInstallationDataUrl. Since that URL is a variable, the phillySolarInstallationDataUrl vairalbe name is used in place of the URL.
+
+
+var parseData = _.map(JSON.parse(ajaxResponseValue), function(obj) { //_.map applies this function to the parsed data (represented by the nested "JSON.parse(ajaxResponseValue)") which extracts the lat, lon and name characteristics of all the solar installations in the parsed data ("JSON.parse(ajaxResponseValue)")
+  return _.pick(obj, 'Y', 'X', 'NAME'); //_.pick extracts those characteristics to be displayed on the web map. 'Y' is coming first before 'X' just as an added way to remember the proper listing order of the coordinates when mapping 
+});
+for (var i=0; i <parseData.length; i = i+1) { //This loops through the parsed data and prints all of the solar installation point information extracted above to the console to make sure the process above worked.
+    console.log(parseData[i])
+    }
+
+
+var makeMarkers = function(obj) { //This function serves as a tool which a marker is made out of the coordinates and popup made out of the name of each solar installation
+    return L.marker([obj.Y, obj.X]).bindPopup(obj.NAME)
+};
+for (var i=0; i <parseData.length; i = i+1) { //This loop statement applies the make markers function created above to all solar installations (the parsed data) by looping through that data and making the markers for each of them
+      makeMarkers(parseData[i])
+      }
+
+
+var plotMarkers = function(obj) { //This function simply adds the markers made above to the map
+    return makeMarkers(parseData[i]).addTo(map)
+};
+
+}); //THIS CLOSES OUT THE ( and { IN ".done(function(ajaxResponseValue) {" WHERE THE downloadData VARIABLE IS CREATED
 
 
 /* =====================
@@ -53,7 +76,9 @@ var plotMarkers = function() {};
   user's input.
 ===================== */
 
-var removeMarkers = function() {};
+ var removeMarkers = function() { //This function undoes the marker adding process above so that it just prints the base map without any markers. The variable 'markers' that contains the markers map layer is actually created in the downloadData.done(function(data) {} function at the very bottom of this code
+  map.removeLayer(markers);
+};
 
 /* =====================
   Optional, stretch goal
@@ -83,9 +108,9 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
  CODE EXECUTED HERE!
 ===================== */
 
-downloadData.done(function(data) {
-  var parsed = parseData(data);
-  var markers = makeMarkers(parsed);
-  plotMarkers(markers);
-  removeMarkers(markers);
+ downloadData.done(function(data) {
+  var parsed = parseData(data); //Parses the data
+  var markers = makeMarkers(parsed); //Where the variable 'markers' that contains the markers map layer is actually created
+  plotMarkers(markers); //First plots the markers, but then...
+  removeMarkers(markers); //...removes the markers after they were created so that just the Philadelphia base map shows
 });
