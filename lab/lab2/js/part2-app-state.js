@@ -80,13 +80,13 @@ var removeMarkers = function(data) {
   Note: You can add or remove from the code at the bottom of this file.
 ===================== */
 
-var plotFilterMarkers = function(data) {
+/*var plotFilterMarkers = function(data) {
   _.filter(data, (data) => {return data.ZIPCODE > 19104})//.addTo(map)
-}
+}*/
 
-var filterParsed = function(data) {
-  _.filter(data, (data) => {return data.ZIPCODE > 19104}).push()
-}
+
+//filterParsed(parsed)
+
 /* =====================
  Leaflet setup - feel free to ignore this
 ===================== */
@@ -120,20 +120,13 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 
 // Try to filter the data
 downloadData.done(function(data) {
-  var parsed = parseData(data);
-  var markers = makeMarkers(parsed);
-  plotFilterMarkers(markers);
-  removeMarkers(markers);
-});
-
-var parsed = [];
-var filterdata = [];
-downloadData.done(function(data) {
+  var parsed = [];
   parsed = parseData(data);
   console.log(parsed);
-  filterdata = filterParsed(parsed);
-//  return filterParsed;
+  var filterdata = _.filter(parsed, (data) => {return data.ZIPCODE>19150})
   console.log(filterdata);
-//  plotFilterMarkers(markers);
+  var markers = makeMarkers(filterdata);
+  console.log(markers)
+  plotMarkers(markers);
 //  removeMarkers(markers);
 });
