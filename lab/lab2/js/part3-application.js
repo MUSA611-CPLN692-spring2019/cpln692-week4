@@ -28,6 +28,10 @@
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
 var resetMap = function() {
+  _.forEach(myMarkers, function(x) {
+  map.removeLayer(x);
+});
+myMarkers = null;
   /* =====================
     Fill out this function definition
   ===================== */
@@ -42,14 +46,44 @@ var getAndParseData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+  var Crimedata = "http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
+  var y = $.ajax(Crimedata).done(function(y) {
+    myData = JSON.parse(y);
+  });
 };
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
+
+/*=====================
+    Fill out this function definition
+  =====================*/
+/*var newMarkers = [];
+_.each(myData,function(obj){
+  if(obj["UCR Code"]> numericField1 && obj["UCR Code"]< numericField2 && obj["General Crime Category" ] == stringField ){
+      newMarkers.push(obj);
+    };
+console.log(newMarkers);*/
+var markerfilter = function(y) {
+  var markerfilterd = [];
+  for (i = 0; i < y.length; i++) {
+    //filter a certain type of crime within certain districts, and within certain Police Service Areas (PSA 1: checked, PSA 2: unchecked)
+    if (y[i]['UCR Code'] >= numericField1 && y[i]['UCR Code'] <= numericField2 && y[i]['General Crime Category'] == stringField &&
+  (y[i].District == 24) == booleanField) {
+      markerfilterd.push(y[i]);
+    }
+  }
+  console.log("Number of crimes: " + markerfilterd.length);
+  return markerfilterd;
+};
+
 var plotData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+  myMarkers = _.each(markerfilter(myData), (z) => {
+    L.marker([z.Lat, z.Lng]).addTo(map).bindPopup(z['Location Block']);
+  });
 };
