@@ -69,9 +69,12 @@ var plotMarkers = function(markers) {
   user's input.
 ===================== */
 
-var removeMarkers = function(d) {
-  map.removeLayer(d);
+var removeMarkers = function(markers) {
+  _.each(markers, (d) => {
+    map.removeLayer(d)
+  });
 };
+
 
 /* =====================
   Optional, stretch goal
