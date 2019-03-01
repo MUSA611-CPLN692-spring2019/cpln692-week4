@@ -90,8 +90,8 @@ console.log("fizzbuzz success:",
         It will just log undefined to the console.
 
 ===================== */
-var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
-var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
+//var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
+//var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
 
@@ -103,6 +103,20 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   Remember to call all code within the function body. Use console.log to make sure
   that this step is completed before moving on!
 ===================== */
+var dataDownload= $.ajax({
+  url: "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json",
+})
+  .done(function( msg ) {
+    console.log('in it');
+    //alert( "Data Saved: " + msg );
+    var parseData = JSON.parse(msg);
+    console.log(parseData);
+    var layerGroup = L.featureGroup().addTo(map);
+    plotMap = (dataDownload) => _.forEach(dataDownload, function(x){
+              L.marker([x.lat_final, x.long_final]).addTo(layerGroup);});
+    plotMap(parseData);
+  });
+console.log('out of it');
 
 
 /* =====================
