@@ -85,13 +85,13 @@ var myfilter =function (crash){
     crash.POLICE_AGC== stringField &&
     (crash.DRINKING_D==1)==booleanField) {
       myfilter.push(crash);
-    }return myfilter})}; //The filter does not seem to work 
+    }return myfilter})}; //The filter does not seem to work */
 
 
 var plotData = function() {
-  marker=_.each(myfilter(mydata), function(x){
+  markers=_.each(mydata, function(x){
     L.marker([x.lat_final,x.long_final]).addTo(map).bindPopup(x.DRINKING_D);
-    });
+  });
   };
   /* =====================
     Fill out this function definition
