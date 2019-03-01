@@ -43,20 +43,22 @@ var resetMap = function() {
 ===================== */
 var bikeCrashPhillyUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
-var getAndParseData = function() {
-  bikedata=$.ajax(bikeCrashPhillyUrl)
-  .done(function(bikedata){
-    var mydata=JSON.parse(bikedata);
-    console.log(mydata);
-    console.log('done?');
-  });
-  };
-    console.log(mydata);//????????not defined
   /* =====================
     Fill out this function definition
   ===================== */
 
-
+  // its essential to define mydata out of the scope of ajax function below
+  var mydata;
+  var getAndParseData = function() {
+    bikedata=$.ajax(bikeCrashPhillyUrl)
+    .done(function(bikedata){
+       mydata=JSON.parse(bikedata);
+      console.log(mydata);
+      console.log('done?');
+    });
+    };
+      console.log(mydata);//????????not defined```
+/*
 var myfilter=[]; //filter year, police agc and dringking or not
 _.each(mydata, function(crash){
   if(crash.CRASH_YEAR>=numericField1&&
@@ -72,8 +74,22 @@ _.each(mydata, function(crash){
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
+
+ //filter year, police agc and dringking or not
+
+var myfilter =function (crash){
+  var myfilter=[];
+  _.each(mydata, function(crash){
+  if(crash.CRASH_YEAR>=numericField1&&
+    crash.CRASH_YEAR<=numericField2 &&
+    crash.POLICE_AGC== stringField &&
+    (crash.DRINKING_D==1)==booleanField) {
+      myfilter.push(crash);
+    }return myfilter})}; //The filter does not seem to work 
+
+
 var plotData = function() {
-  markers=_.each(myfilter(mydata), function(x){
+  marker=_.each(myfilter(mydata), function(x){
     L.marker([x.lat_final,x.long_final]).addTo(map).bindPopup(x.DRINKING_D);
     });
   };
