@@ -24,6 +24,8 @@ $('button#my-button').click(function(e) {
   stringField = $('#string').val();
   console.log("stringField", stringField);
 
+  // still need to do do this
+
 
   /* =====================
     Call our resetMap function to remove markers from the map and clear out the array of marker
