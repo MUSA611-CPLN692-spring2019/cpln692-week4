@@ -28,9 +28,8 @@
   Define a resetMap function to remove markers from the map and clear the array of markers
 ===================== */
 var resetMap = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+_.each(myMarkers, (marker) => {map.removeLayer(marker);});
+myMarkers = [];
 };
 
 /* =====================
@@ -39,17 +38,34 @@ var resetMap = function() {
   it down!
 ===================== */
 var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  var rawData = $.ajax("https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json").done((dat) => {
+  myData = JSON.parse(dat);
+});
+};
+var userFilter = function(fData) {
+  return fData.District >= numericField1 & fData.District <= numericField2;
 };
 
+//takes in data list and writes returns array of markers
+var makeMarkers = function(pData) {
+  var tempMarkers = [];
+  _.each(pData, (dataLine) => {tempMarkers.push(L.marker([dataLine.Lat, dataLine.Lng]))});
+  return tempMarkers;
+};
+
+
+//takes in a list of markers and adds each to the map one at a time
+var plotMarkers = function(marker) {
+  _.each(marker, (mark) => {
+    mark.addTo(map);
+  });
+};
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
 var plotData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  var filteredData = _.filter(myData, userFilter); //applies filter`
+ myMarkers = makeMarkers(filteredData);    //generates markers and assigns to global list
+ plotMarkers(myMarkers);                   //plots to map
 };
