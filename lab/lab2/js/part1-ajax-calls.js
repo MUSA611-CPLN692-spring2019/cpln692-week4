@@ -19,7 +19,10 @@
   This recipe, can be used by underscore's _.filter. It will return only words with
    >=5 characters.
 ===================== */
-var isLengthOfFiveOrMore = function(str) {};
+var isLengthOfFiveOrMore = function(word) {
+  if(word.length >= 5){
+  return word}
+};
 
 console.log("isLengthOfFiveOrMore success:",
   _.isEqual(_.filter(['this', 'is','a', 'test', 'testing'], isLengthOfFiveOrMore), ['testing']));
@@ -30,15 +33,19 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {};
+var logDouble = function(num) {
+  console.log(num * 2)
+};
+
 var theArray = [1, 5, 20, 100];
 
+console.log(_.each(theArray,logDouble))
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
   over, it will equal ['fizz', 'buzz', 'fizzbuzz'];
 ===================== */
-var fizzbuzzArray = [];
+var fizzbuzzArray = [3,5,15];
 var fizzbuzzFunc = function(num) {
   var str = '';
   if (num % 3 === 0) { str = 'fizz'; }
@@ -94,6 +101,20 @@ var phillySolarInstallationDataUrl = "https://raw.githubusercontent.com/CPLN692-
 var phillyCrimeDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json";
 var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json";
 
+let solarData
+let stations
+let popupText= {solarData:undefined,popupText:undefined};
+
+$.ajax(phillySolarInstallationDataUrl).done(function(ajaxResponseValue){
+  solarData = JSON.parse(ajaxResponseValue);
+  _.each(solarData, (solarDataPoint) => {return   L.marker([solarDataPoint.LAT, solarDataPoint.LONG_]).bindPopup(solarDataPoint.NAME).addTo(map)});})
+
+
+
+
+//  _.each(data,function(x){
+//    L.marker([x.lat,x.lng].addTo(map))
+//  })
 
 /* =====================
   Data you grab through ajax is just text. You'll need to parse it as javascript
