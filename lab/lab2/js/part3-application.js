@@ -31,6 +31,9 @@ var resetMap = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+  _.map(myMarkers,function(marker){
+    map.removeLayer(marker);
+  })
 };
 
 /* =====================
@@ -38,17 +41,27 @@ var resetMap = function() {
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
+// var parseData;
+
 var getAndParseData = function() {
   /* =====================
     Fill out this function definition
   ===================== */
-};
+  let dataResource = 'https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-crime-snippet.json';
+  $.ajax(dataResource).done(function(ajaxResponseValue){
+    return parseData = JSON.parse(ajaxResponseValue)
+  })};
 
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
 var plotData = function() {
+  _.map(parseData,function(markers){
+    if(markers.PSA === 1){
+      return L.marker([markers.Lat,markers.Lng]).bindPopup(markers["Location Block"]).addTo(map);
+    }
+  })
   /* =====================
     Fill out this function definition
   ===================== */

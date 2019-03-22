@@ -9,7 +9,7 @@ var rideIndego = "https://www.rideindego.com/stations/json/";
 
 
 // setting variables to persist outside of the ajax function calls
-var popupText;
+var popupText= {bikeData:undefined,popupText:undefined};
 var bikeData;
 var stations;
 var cleanStations;
