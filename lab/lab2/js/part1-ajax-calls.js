@@ -30,9 +30,9 @@ console.log("isLengthOfFiveOrMore success:",
   function you write along with underscore's _.each to log the double of every
   number in the provided array.
 ===================== */
-var logDouble = function(num) {return (num * 2);};
+var logDouble = function(num) {console.log(num * 2);};
 var theArray = [1, 5, 20, 100];
-console.log(_.each(theArray, logDouble)
+_.each(theArray, logDouble)
 
 /* =====================
   Given this already defined function, define fizzbuzzArray so that, when mapped
@@ -103,16 +103,16 @@ var phillyBikeCrashesDataUrl = "https://raw.githubusercontent.com/CPLN692-MUSA61
   Remember to call all code within the function body. Use console.log to make sure
   that this step is completed before moving on!
 ===================== */
-$.ajax(phillySolarInstallationDataUrl).done(function(a){
-  var solarInstallation=JSON.parse(a);
-  console.log(solarInstallation);
+$.ajax(phillyBikeCrashesDataUrl).done(function(a){
+  var json = JSON.parse(a);
+
 
 /* =====================
   Now that you've properly parsed your data, use _.each to plot the
   dataset you've pulled down.
 ===================== */
-_.each(solarInstallation, function(i){L.marker([i.Lat, i.Lng]).addTo(map);});
-
+_.each(json, function(i){L.marker([i.lat_final, i.long_final]).addTo(map);});
+});
 /* =====================
  Leaflet setup - feel free to ignore this
 ===================== */

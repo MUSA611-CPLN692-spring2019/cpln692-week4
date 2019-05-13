@@ -34,13 +34,13 @@
 ===================== */
 
 // We set this to HTTP to prevent 'CORS' issues
-var downloadData = $.ajax("datasets/geojson/HousingCounselingAgencies.geojson");
+var downloadData = $.ajax("http://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-bike-crashes-snippet.json");
 var parseData = function(data) {
   return JSON.parse(data);
 };
 var makeAMarker = function(list) {
   var listOfMarkers=[];
-  _.each(list, function(obj){listOfMarkers.push(L.marker([obj.Lat, obj.Lng]));});
+  _.each(list, function(obj){listOfMarkers.push(L.marker([obj.lat_final, obj.long_final]));});
   return listOfMarkers;
 };
 var plotMarkers = function(list) {_.each(list, function(obj){obj.addTo(map);});

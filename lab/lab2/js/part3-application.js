@@ -31,29 +31,44 @@ var resetMap = function() {
   /* =====================
     Fill out this function definition
   ===================== */
-  resetMap();
+  _.each(myMarkers, function(obj) {
+    map.removeLayer(obj);
+  });
 };
 /* =====================
   Define a getAndParseData function to grab our dataset through a jQuery.ajax call ($.ajax). It
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
-var downloadData = $.ajax("datasets/geojson/philadelphia-crime-points.geojson");
-var getParseData = function(data) {return JSON.parse(data);};
-  /* =====================
-    Fill out this function definition
-  ===================== */
-var makeAMarker = function(data) {
-  var listOfMarkers=[];
-  _.each(list, function(obj){listOfMarkers.push(L.marker([obj.Lat, obj.Lng]));});
-  return listOfMarkers;
+var dataSet = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
+var getAndParseData = function() {
+  $.ajax(dataSet).done(function(data) {
+    myData = JSON.parse(data);
+  });
 };
-var markersFiltered = function(b){_.filter(listOfMarkers, function(b){return b.text_general_code === "Theft from Vehicle";});};
-_.each(markersFiltered, function(d){L.marker([d.Lat, d.Lng]).addTo(map.bindPopup("Theft from Vehicle:" + String(c.location_block)));})
+/* =====================
+  Fill out this function definition
+===================== */
+var plotData = function() {
+  _.each(myData, function(feature) {
+    var marker = L.marker([feature.LAT, feature.LONG_]).bindPopup(feature.NAME).setOpacity(0);
+    if (feature.ZIPCODE>numericField1 && feature.ZIPCODE<numericField2) {
+      marker = marker.setOpacity(1);
+    }
+    if (stringField == feature.ZIPCODE) {
+      marker = marker.setOpacity(1);
+    }
+    if (booleanField && feature.ZIPCODE === 19147) {
+      marker = marker.setOpacity(1);
+    }
+    marker.addTo(map);
+    myMarkers.push(marker);
+  });
+};
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
-  /* =====================
-    Fill out this function definition
-  ===================== */
+/* =====================
+  Fill out this function definition
+===================== */

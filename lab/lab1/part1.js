@@ -82,7 +82,7 @@ underscore. Should evaluate to true.
 ===================== */
 
 var query3;
-query3 = _isObject(_.first(bakedGoods));
+query3 = _.isObject(_.first(bakedGoods));
 console.log('The first element in bakedGoods is an object:', query3);
 
 /* =====================
@@ -98,7 +98,7 @@ Use _.filter to return all baked goods that cost more than $4.
 ===================== */
 
 var query5;
-query5 = ._filter(bakedGoods, function(obj) {return obj.price>4;});
+query5 = _.filter(bakedGoods, function(obj) {return obj.price>4;});
 console.log('More than $4:', query5);
 
 /* =====================
