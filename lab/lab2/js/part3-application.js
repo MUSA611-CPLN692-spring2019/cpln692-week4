@@ -31,25 +31,44 @@ var resetMap = function() {
   /* =====================
     Fill out this function definition
   ===================== */
+  _.each(myMarkers, function(obj) {
+    map.removeLayer(obj);
+  });
 };
-
 /* =====================
   Define a getAndParseData function to grab our dataset through a jQuery.ajax call ($.ajax). It
   will be called as soon as the application starts. Be sure to parse your data once you've pulled
   it down!
 ===================== */
+var dataSet = "https://raw.githubusercontent.com/CPLN692-MUSA611/datasets/master/json/philadelphia-solar-installations.json";
 var getAndParseData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
+  $.ajax(dataSet).done(function(data) {
+    myData = JSON.parse(data);
+  });
 };
-
+/* =====================
+  Fill out this function definition
+===================== */
+var plotData = function() {
+  _.each(myData, function(feature) {
+    var marker = L.marker([feature.LAT, feature.LONG_]).bindPopup(feature.NAME).setOpacity(0);
+    if (feature.ZIPCODE>numericField1 && feature.ZIPCODE<numericField2) {
+      marker = marker.setOpacity(1);
+    }
+    if (stringField == feature.ZIPCODE) {
+      marker = marker.setOpacity(1);
+    }
+    if (booleanField && feature.ZIPCODE === 19147) {
+      marker = marker.setOpacity(1);
+    }
+    marker.addTo(map);
+    myMarkers.push(marker);
+  });
+};
 /* =====================
   Call our plotData function. It should plot all the markers that meet our criteria (whatever that
   criteria happens to be — that's entirely up to you)
 ===================== */
-var plotData = function() {
-  /* =====================
-    Fill out this function definition
-  ===================== */
-};
+/* =====================
+  Fill out this function definition
+===================== */
